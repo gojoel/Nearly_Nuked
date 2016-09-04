@@ -15,10 +15,10 @@ var ground : SKSpriteNode!
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-
+    
     var ground : SKSpriteNode!
     var ninjaRun : SKAction!
-
+    
     var isStarted : Bool = false
     var isGameOver : Bool = false
     
@@ -29,14 +29,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addHero()
         addNukeGenerator()
         addTapToStartLabel()
+        addPointsLabel()
         addPhysicsWorld()
+        loadScore()
+        
     }
     
     func addHero()
     {
         //add hero & movement
         hero = JGHero()
-        hero.position = CGPointMake(70, ground.position.y + ground.frame.size.height/2 + hero.frame.size.height/2)
+        hero.position = CGPointMake(80,ground.position.y + ground.frame.size.height/2 + hero.frame.size.height/2)
         addChild(hero)
     }
     
@@ -84,6 +87,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tapToStartLabel.runAction(blinkAnimation())
     }
     
+    func addPointsLabel()
+    {
+        let pointsLabel = JGPointsLabel(num: 0)
+        pointsLabel.position = CGPointMake(-(view!.frame.size.width/2 - 20), view!.frame.size.height/2 - 35)
+        pointsLabel.name = "pointsLabel";
+        addChild(pointsLabel)
+        
+        let highscoreLabel = JGPointsLabel(num: 0);
+        highscoreLabel.name = "highscoreLabel"
+        highscoreLabel.position = CGPointMake(view!.frame.size.width/2 - 20,
+            view!.frame.size.height/2 - 35)
+        addChild(highscoreLabel)
+        
+        let highscoreTextLabel = SKLabelNode(text: "High")
+        highscoreTextLabel.fontColor = UIColor.blackColor()
+        highscoreTextLabel.fontSize = 18.0
+        highscoreTextLabel.fontName = "Helvetica"
+        highscoreTextLabel.position = CGPointMake(0, -20)
+        highscoreLabel.addChild(highscoreTextLabel)
+    }
+    
     func addPhysicsWorld()
     {
         self.anchorPoint = CGPointMake(0.5, 0.5)
@@ -91,6 +115,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = sceneCategory
         // add physics world
         physicsWorld.contactDelegate = self
+    }
+    
+    func loadScore()
+    {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let highscoreLabel = childNodeWithName("highscoreLabel") as! JGPointsLabel
+        highscoreLabel.setScore(defaults.integerForKey("highscore")) //grab high saved scared
     }
     
     func start()
@@ -107,9 +138,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         isGameOver = true
         
         //stop everything
-        hero.fall()
+        //hero.fall()
         nukeGenerator.stopNukes()
         hero.ninjaMoveEnded()
+        hero.dead()
         
         // create game over label
         let gameOverLabel = SKLabelNode(text: "Game Over!")
@@ -117,6 +149,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameOverLabel.fontName = "Helvetica"
         addChild(gameOverLabel)
         gameOverLabel.runAction(blinkAnimation())
+        
+        // Save highscore
+        let pointsLabel = childNodeWithName("pointsLabel") as! JGPointsLabel
+        let highscoreLabel = childNodeWithName("highscoreLabel") as! JGPointsLabel
+        
+        if highscoreLabel.number < pointsLabel.number
+        {
+            highscoreLabel.setScore(pointsLabel.number)
+            
+            // Save info
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setInteger(highscoreLabel.number, forKey: "highscore")
+        }
     }
     
     func restart() {
@@ -144,15 +189,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         //Choose one of the touches to work with
-
+        
     }
-
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
+        if nukeGenerator.nukeTracker.count > 0{
+            let nuke = nukeGenerator.nukeTracker[0] as JGNuke
+            
+            let nukeLocation = nukeGenerator.convertPoint(nuke.position, toNode: self)
+            
+            if nukeLocation.y < hero.position.y
+            {
+                nukeGenerator.nukeTracker.removeAtIndex(0)
+                let pointsLabel = childNodeWithName("pointsLabel") as! JGPointsLabel
+                pointsLabel.increment()
+            }
+        }
     }
     
     // MARK: - SKPhysicsContactDelegate
     func didBeginContact(contact: SKPhysicsContact) {
+        let dead = SKTexture(imageNamed: "dead.png")
         if !isGameOver{
             gameOver()
             println("Did begin contact")

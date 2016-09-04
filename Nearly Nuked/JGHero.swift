@@ -103,8 +103,9 @@ class JGHero: SKSpriteNode
 
     }
     
-    func fall()
+    func dead()
     {
+        let deadNinja = SKTexture(imageNamed: "dead.png")
         ninja.texture = deadNinja
         //physicsBody?.affectedByGravity = true
         //physicsBody?.applyImpulse(CGVectorMake(-8, 30))

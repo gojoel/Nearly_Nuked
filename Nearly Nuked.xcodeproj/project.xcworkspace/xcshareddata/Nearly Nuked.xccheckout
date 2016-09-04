@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>30808934-66B0-4E83-8498-4AB207C9ABFD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Nearly Nuked</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>668885016F01280C497377945F1595B0981281AF</key>
+		<string>https://github.com/xHorus/Nearly_Nuked.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Nearly Nuked.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>668885016F01280C497377945F1595B0981281AF</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/xHorus/Nearly_Nuked.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>668885016F01280C497377945F1595B0981281AF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>668885016F01280C497377945F1595B0981281AF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Nearly%20Nuked</string>
+		</dict>
+	</array>
+</dict>
+</plist>

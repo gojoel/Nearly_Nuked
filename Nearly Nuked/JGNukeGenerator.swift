@@ -14,6 +14,8 @@ class JGNukeGenerator: SKSpriteNode
     
     var generationTimer : NSTimer?
     var nukes = [JGNuke]()
+    var nukeTracker = [JGNuke]()
+    
     
     func startGeneratingNukeEvery(seconds: NSTimeInterval)
     {
@@ -44,6 +46,7 @@ class JGNukeGenerator: SKSpriteNode
         nuke.position.x = -CGFloat(randSpawn)
         nuke.position.y = size.height/2 + nuke.size.height/2
         nukes.append(nuke)
+        nukeTracker.append(nuke)
         addChild(nuke)
     }
     
